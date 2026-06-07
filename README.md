@@ -195,6 +195,8 @@ The sequence diagram illustrates the interaction between the user, SuciTrack sys
 <img width="1917" height="971" alt="11" src="https://github.com/user-attachments/assets/6d5b0b77-b696-42fd-b618-c6b4f9c03953" />
 <img width="1917" height="967" alt="8" src="https://github.com/user-attachments/assets/031e4407-645b-4102-b162-ee9ea623d32b" />
 <img width="1917" height="967" alt="9" src="https://github.com/user-attachments/assets/31abfb4b-3d0e-473f-a937-04388ef04aa4" />
+<img width="1917" height="962" alt="12" src="https://github.com/user-attachments/assets/b184c046-1257-474b-8e55-1327535878d7" />
+
 
 
 
