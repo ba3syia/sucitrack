@@ -7,28 +7,21 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up(): void
-    {
-        Schema::create('qada_logs', function (Blueprint $table) {
-            $table->id();
+{
+    Schema::create('qada_logs', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
-            // link ke user (kalau system kau ada auth)
-            $table->unsignedBigInteger('user_id')->nullable();
+        $table->dateTime('qada_date');
+        $table->string('prayer');
 
-            // link ke menstrual record (optional tapi penting untuk integration)
-            $table->unsignedBigInteger('menstrual_record_id')->nullable();
+        $table->enum('status', ['pending', 'completed'])->default('pending');
 
-            // data utama Qada
-            $table->date('qada_date')->nullable();
-            $table->string('prayer_type')->nullable(); // contoh: Subuh, Zohor etc
+        $table->text('notes')->nullable();
 
-            // status tracking
-            $table->boolean('is_completed')->default(false);
-
-            $table->text('notes')->nullable();
-
-            $table->timestamps();
-        });
-    }
+        $table->timestamps();
+    });
+}
 
     public function down(): void
     {

@@ -17,27 +17,30 @@
 
         </div>
 
-        <!-- SUMMARY -->
-        <div class="grid grid-cols-3 gap-6">
+        <!-- SUMMARY BOXES -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-            <div class="bg-white/60 backdrop-blur-md p-6 rounded-3xl border border-pink-100 shadow-sm">
-                <p class="text-xs text-gray-400 uppercase">Pending</p>
-                <div class="text-3xl font-bold text-pink-600 mt-2">
+            <!-- PENDING -->
+            <div class="bg-white/80 shadow rounded-xl p-4 h-28 flex flex-col items-center justify-center text-center">
+                <div class="text-sm text-black">Pending</div>
+                <div class="text-3xl font-bold text-red-500 mt-1">
                     {{ $pendingQadaCount ?? 0 }}
                 </div>
             </div>
 
-            <div class="bg-white/60 backdrop-blur-md p-6 rounded-3xl border border-pink-100 shadow-sm">
-                <p class="text-xs text-gray-400 uppercase">Completed</p>
-                <div class="text-3xl font-bold text-gray-800 mt-2">
+            <!-- COMPLETED -->
+            <div class="bg-white/80 shadow rounded-xl p-4 h-28 flex flex-col items-center justify-center text-center">
+                <div class="text-sm text-black">Completed</div>
+                <div class="text-3xl font-bold text-green-500 mt-1">
                     {{ $completedQadaCount ?? 0 }}
                 </div>
             </div>
 
-            <div class="bg-white/60 backdrop-blur-md p-6 rounded-3xl border border-pink-100 shadow-sm">
-                <p class="text-xs text-gray-400 uppercase">Status</p>
-                <div class="text-lg font-semibold text-gray-700 mt-2">
-                    Tracking Active
+            <!-- TOTAL -->
+            <div class="bg-white/80 shadow rounded-xl p-4 h-28 flex flex-col items-center justify-center text-center">
+                <div class="text-sm text-black">Total Qada</div>
+                <div class="text-3xl font-bold text-gray-500 mt-1">
+                    {{ $totalQadaCount ?? 0 }}
                 </div>
             </div>
 
@@ -46,40 +49,67 @@
         <!-- TABLE -->
         <div class="bg-white/60 backdrop-blur-md border border-pink-100 rounded-3xl p-6 shadow-sm">
 
+            <h3 class="text-lg font-semibold mb-4">Qada Tracker</h3>
+
             <table class="w-full text-sm">
 
                 <thead>
-                    <tr class="text-left text-gray-500 border-b">
-                        <th class="py-2">Date</th>
-                        <th class="py-2">Prayer</th>
-                        <th class="py-2">Status</th>
-                        <th class="py-2">Notes</th>
-                    </tr>
+                <tr class="text-left border-b">
+                    <th class="py-2">Date</th>
+                    <th class="py-2">Prayer</th>
+                    <th class="py-2">Status</th>
+                    <th class="py-2">Done</th>
+                </tr>
                 </thead>
 
                 <tbody>
+                @forelse($qadas as $qada)
+                <tr class="border-b">
 
-                @forelse($qadaLogs as $qada)
+                    <td class="py-2">
+                        {{ \Carbon\Carbon::parse($qada->qada_date)->format('d M Y') }}
+                    </td>
 
-                    <tr class="border-b">
-                        <td class="py-2">{{ $qada->qada_date }}</td>
-                        <td class="py-2">{{ $qada->prayer_type }}</td>
-                        <td class="py-2">
-                            {{ $qada->is_completed ? 'Completed' : 'Pending' }}
-                        </td>
-                        <td class="py-2">{{ $qada->notes ?? '-' }}</td>
-                    </tr>
+                    <!-- PRAYER NAME -->
+                    <td class="py-2 font-medium text-gray-700">
+                        {{ $qada->prayer_type }}
+                    </td>
 
+                    <!-- STATUS -->
+                    <td class="py-2">
+                        @if($qada->status === 'completed')
+                            <span class="text-green-600">Completed</span>
+                        @else
+                            <span class="text-red-500">Pending</span>
+                        @endif
+                    </td>
+
+                    <!-- TOGGLE -->
+                    <td class="py-2">
+
+                        <form method="POST" action="{{ route('qada.toggle', $qada->id) }}">
+                            @csrf
+                            @method('PATCH')
+
+                            <button type="submit" class="text-lg">
+                                @if($qada->status === 'completed')
+                                    ☑
+                                @else
+                                    ☐
+                                @endif
+                            </button>
+                        </form>
+
+                    </td>
+
+                </tr>
                 @empty
-
-                    <tr>
-                        <td colspan="4" class="py-6 text-center text-gray-400">
-                            No Qada records yet
-                        </td>
-                    </tr>
-
+                <tr>
+                    <td colspan="4" class="py-6 text-center text-gray-400">
+                        No Qada records yet
+                    </td>
+                </tr>
                 @endforelse
-
                 </tbody>
 
             </table>

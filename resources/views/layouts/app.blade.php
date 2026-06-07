@@ -7,6 +7,8 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 

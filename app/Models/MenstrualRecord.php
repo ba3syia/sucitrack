@@ -12,7 +12,8 @@ class MenstrualRecord extends Model
         'user_id',
         'start_datetime',
         'end_datetime',
-        'duration_days'
+        'duration_days',
+        'qada_calculated',
     ];
 
     public function user(): BelongsTo

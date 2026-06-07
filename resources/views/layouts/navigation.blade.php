@@ -26,6 +26,14 @@
                 Dashboard
             </a>
 
+            <a href="{{ route('calendar.index') }}"
+                class="px-4 py-2 rounded-xl transition
+                {{ request()->is('calendar*')
+                    ? 'bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-sm'
+                    : 'text-gray-600 hover:bg-white/70' }}">
+                Calendar
+            </a>
+
             <a href="{{ route('menstrual_records.index') }}"
                class="px-4 py-2 rounded-xl transition
                {{ request()->is('menstrual_records*')
@@ -42,7 +50,7 @@
                 Qada' List
             </a>
 
-            <!-- LOGOUT (OPTION 2) -->
+            <!-- LOGOUT -->
             <form method="POST" action="{{ route('logout') }}" class="ml-2">
                 @csrf
                 <button type="submit"

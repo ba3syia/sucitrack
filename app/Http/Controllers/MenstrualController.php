@@ -61,7 +61,9 @@ class MenstrualController extends Controller
             'end_datetime' => $request->end_datetime,
         ]);
 
-        QadaLog::where('menstrual_record_id', $record->id)->delete();
+        QadaLog::where('user_id', auth()->id())
+            ->whereBetween('qada_date', [$record->start_datetime, $record->end_datetime])
+            ->delete();
 
         $this->generateQada($record);
 
@@ -74,7 +76,9 @@ class MenstrualController extends Controller
         $record = MenstrualRecord::where('user_id', auth()->id())
             ->findOrFail($id);
 
-        QadaLog::where('menstrual_record_id', $record->id)->delete();
+        QadaLog::where('user_id', auth()->id())
+        ->whereBetween('qada_date', [$record->start_datetime, $record->end_datetime])
+        ->delete();
 
         $record->delete();
 
@@ -103,11 +107,11 @@ class MenstrualController extends Controller
             : 0;
 
         $pendingQadaCount = QadaLog::where('user_id', $userId)
-            ->where('is_completed', false)
+            ->where('status', false)
             ->count();
 
         $completedQadaCount = QadaLog::where('user_id', $userId)
-            ->where('is_completed', true)
+            ->where('status', true)
             ->count();
 
         return view('dashboard', compact(
@@ -156,12 +160,11 @@ class MenstrualController extends Controller
 
                     QadaLog::firstOrCreate([
                         'user_id' => auth()->id(),
-                        'menstrual_record_id' => $record->id,
                         'qada_date' => $date,
                         'prayer_type' => $prayerName,
                     ], [
-                        'is_completed' => false,
-                        'notes' => 'Auto-generated from menstrual cycle'
+                        'status' => 'pending',
+                        'notes' => null
                     ]);
                 }
             }

@@ -14,16 +14,15 @@ class QadaLog extends Model
 
     protected $fillable = [
         'user_id',
-        'menstrual_record_id',
         'qada_date',
         'prayer_type',
-        'is_completed',
+        'status',
         'notes',
     ];
 
     protected $casts = [
         'qada_date' => 'date',
-        'is_completed' => 'boolean',
+        'status' => 'boolean',
     ];
 
     public function user(): BelongsTo

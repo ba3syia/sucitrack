@@ -4,105 +4,58 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\QadaLog;
+use Illuminate\Support\Facades\Auth;
 
 class QadaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $qadaLogs = QadaLog::where('user_id', auth()->id())
-            ->orderBy('qada_date', 'desc')
-            ->get();
+        $userId = Auth::id();
 
-        $pendingQadaCount = QadaLog::where('user_id', auth()->id())
-            ->where('is_completed', false)
+        $qadas = QadaLog::where('user_id', $userId)->get();
+
+        $pendingQadaCount = QadaLog::where('user_id', $userId)
+            ->where('status', 'pending')
             ->count();
 
-        $completedQadaCount = QadaLog::where('user_id', auth()->id())
-            ->where('is_completed', true)
+        $completedQadaCount = QadaLog::where('user_id', $userId)
+            ->where('status', 'completed')
             ->count();
 
-        return view('indexqada', compact('qadaLogs', 'pendingQadaCount', 'completedQadaCount'));
+        $totalQadaCount = QadaLog::where('user_id', $userId)->count();
+
+        return view('indexqada', compact(
+            'qadas',
+            'pendingQadaCount',
+            'completedQadaCount',
+            'totalQadaCount'
+        ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('createqada');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $request->validate([
-            'prayer_type' => 'required|string',
-            'qada_date' => 'required|date',
+        QadaLog::firstOrCreate([
+            'user_id' => auth()->id(),
+            'qada_date' => $date,
+            'prayer_type' => $prayerName,
+        ], [
+            'status' => 'pending',
+            'notes' => $prayerName
         ]);
 
-        QadaLog::create([
-            'user_id' => 1,
-            'qada_date' => $request->qada_date,
-            'prayer_type' => $request->prayer_type,
-            'is_completed' => false,
-            'notes' => $request->notes ?? null,
-        ]);
-
-        return redirect()->route('qada.index')
-            ->with('success', 'Qada log created successfully');
+        return redirect()->route('qada.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function toggle($id)
     {
-        $qada = QadaLog::findOrFail($id);
-
-        return view('showqada', compact('qada'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $qada = QadaLog::findOrFail($id);
-
-        return view('editqada', compact('qada'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $qada = QadaLog::findOrFail($id);
+        $qada = QadaLog::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
         $qada->update([
-            'prayer_type' => $request->prayer_type,
-            'qada_date' => $request->qada_date,
-            'is_completed' => $request->is_completed ?? false,
-            'notes' => $request->notes,
+            'status' => $qada->status === 'completed' ? 'pending' : 'completed'
         ]);
 
-        return redirect()->route('qada.index')
-            ->with('success', 'Qada updated successfully');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        QadaLog::findOrFail($id)->delete();
-
-        return redirect()->route('qada.index')
-            ->with('success', 'Qada deleted successfully');
+        return back();
     }
 }

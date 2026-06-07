@@ -14,13 +14,12 @@ class DashboardController extends Controller
     {
         $userId = Auth::id();
 
+        /* ACTIVE RECORD */
         $activeRecord = MenstrualRecord::where('user_id', $userId)
             ->orderBy('start_datetime', 'desc')
             ->first();
 
-        // ------------------------------------------------------------
-        // LOGIK A: HARI SUCI
-        // ------------------------------------------------------------
+        /* LATEST RECORDS */
         $latestRecords = MenstrualRecord::where('user_id', $userId)
             ->orderBy('start_datetime', 'desc')
             ->take(2)
@@ -60,9 +59,7 @@ class DashboardController extends Controller
             }
         }
 
-        // ------------------------------------------------------------
-        // PRAYER TIMES
-        // ------------------------------------------------------------
+        /* PRAYER TIMES */
         $prayer = $this->getTodayPrayerTimes();
 
         if (!$prayer) {
@@ -75,9 +72,7 @@ class DashboardController extends Controller
             ];
         }
 
-        // ------------------------------------------------------------
-        // QADA CALCULATION
-        // ------------------------------------------------------------
+        /* CALCULATION BASE */
         $calculated = [
             'Subuh' => 0,
             'Zohor' => 0,
@@ -108,65 +103,48 @@ class DashboardController extends Controller
             }
         }
 
-        // ------------------------------------------------------------
-        // COMPLETED QADA
-        // ------------------------------------------------------------
-        $completedLogs = QadaLog::where('user_id', $userId)
-            ->where('is_completed', true)
-            ->selectRaw('prayer_type, count(*) as total')
-            ->groupBy('prayer_type')
-            ->pluck('total', 'prayer_type')
-            ->toArray();
+        /* COMPLETED QADA */
+        $completedCount = QadaLog::where('user_id', $userId)
+            ->where('status', 'completed')
+            ->count();
 
+        /* FINAL CALCULATION */
         $final = [];
 
         foreach ($calculated as $key => $value) {
-            $final[$key] = max(0, $value - ($completedLogs[$key] ?? 0));
+            $final[$key] = max(0, $value - $completedCount);
         }
 
-        // ------------------------------------------------------------
-        // PENDING QADA
-        // ------------------------------------------------------------
-        $pendingQadaItems = QadaLog::where('user_id', $userId)
-            ->where('is_completed', false)
-            ->orderBy('qada_date', 'asc')
-            ->get();
-
-        $pendingQadaCount = $pendingQadaItems->count();
-
-        // ------------------------------------------------------------
-        // NEXT PRAYER (FIXED REAL TIME)
-        // ------------------------------------------------------------
+        /* NEXT PRAYER */
         $now = Carbon::now();
+        $today = Carbon::today();
 
         $nextPrayer = null;
-        $smallestDiff = null;
+        $nextTime = null;
 
         foreach ($prayer as $name => $time) {
 
             if (!$time) continue;
 
-            // IMPORTANT FIX: bind prayer time to TODAY date
             $prayerTime = Carbon::createFromFormat(
                 'Y-m-d H:i',
-                now()->format('Y-m-d') . ' ' . $time
+                $today->format('Y-m-d') . ' ' . $time
             );
 
-            if ($prayerTime->lt($now)) continue;
+            if ($prayerTime->gt($now)) {
 
-            $diff = $now->diffInMinutes($prayerTime, false);
-
-            if ($smallestDiff === null || $diff < $smallestDiff) {
-                $smallestDiff = $diff;
-                $nextPrayer = $name;
+                if (!$nextTime || $prayerTime->lt($nextTime)) {
+                    $nextTime = $prayerTime;
+                    $nextPrayer = $name;
+                }
             }
         }
 
-        // fallback (important for midnight case)
         if (!$nextPrayer) {
             $nextPrayer = 'Subuh';
         }
 
+        /* LABELS */
         $labels = [
             'Subuh' => 'Subuh',
             'Zohor' => 'Zohor',
@@ -174,6 +152,14 @@ class DashboardController extends Controller
             'Maghrib' => 'Maghrib',
             'Isya' => 'Isyak',
         ];
+
+        /* QADA LIST */
+        $pendingQadaItems = QadaLog::where('user_id', $userId)
+            ->where('status', 'pending')
+            ->orderBy('qada_date', 'asc')
+            ->get();
+
+        $pendingQadaCount = $pendingQadaItems->count();
 
         return view('dashboard', compact(
             'activeRecord',
@@ -187,20 +173,6 @@ class DashboardController extends Controller
             'labels',
             'final'
         ));
-    }
-
-    public function completeQada($id)
-    {
-        $log = QadaLog::where('user_id', Auth::id())
-            ->findOrFail($id);
-
-        $log->update([
-            'is_completed' => true
-        ]);
-
-        return redirect()
-            ->route('dashboard')
-            ->with('success', 'Qada prayer marked as completed!');
     }
 
     private function getTodayPrayerTimes()
