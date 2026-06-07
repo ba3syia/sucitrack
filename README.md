@@ -191,10 +191,11 @@ The sequence diagram illustrates the interaction between the user, SuciTrack sys
 <img width="1917" height="972" alt="4" src="https://github.com/user-attachments/assets/9766bf1e-4ace-4c57-bfd6-91c8cfbc26b8" />
 <img width="1917" height="966" alt="5" src="https://github.com/user-attachments/assets/81f7445a-f717-4922-a2d0-76a4c8301a22" />
 <img width="1917" height="966" alt="6" src="https://github.com/user-attachments/assets/a49d8a6e-914b-46e6-b73f-b20fa6d77b97" />
-<img width="1917" height="967" alt="8" src="https://github.com/user-attachments/assets/031e4407-645b-4102-b162-ee9ea623d32b" />
-<img width="1917" height="971" alt="11" src="https://github.com/user-attachments/assets/6d5b0b77-b696-42fd-b618-c6b4f9c03953" />
-<img width="1917" height="967" alt="9" src="https://github.com/user-attachments/assets/31abfb4b-3d0e-473f-a937-04388ef04aa4" />
 <img width="1917" height="967" alt="10" src="https://github.com/user-attachments/assets/9d683122-b7c8-4025-959c-3cf5ca76da47" />
+<img width="1917" height="971" alt="11" src="https://github.com/user-attachments/assets/6d5b0b77-b696-42fd-b618-c6b4f9c03953" />
+<img width="1917" height="967" alt="8" src="https://github.com/user-attachments/assets/031e4407-645b-4102-b162-ee9ea623d32b" />
+<img width="1917" height="967" alt="9" src="https://github.com/user-attachments/assets/31abfb4b-3d0e-473f-a937-04388ef04aa4" />
+
 
 
 ## 8. Implementation Details
