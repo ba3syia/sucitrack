@@ -413,9 +413,127 @@ The `User` model represents the people who use the application. It is built on L
 
 - **Relationships**  
   - A user can have many **menstrual records** (`hasMany` relationship).  
-  - A user can have many **reminders** (`hasMany` relationship).  
+  - A user can have many **reminders** (`hasMany` relationship).
+  
+### View
 
+### calendar > index.blade.php
+<img width="774" height="781" alt="Screenshot 2026-06-08 081834" src="https://github.com/user-attachments/assets/b600da85-7e64-4f06-8ec2-31b9c7118bb3" />
 
-## 9. Recommendations
+index.blade.php inside the **calendar** folder is responsible for displaying the menstrual cycle data in a visual calendar format using the FullCalendar JavaScript library.
 
-## 10. Conclusion
+1. **Calendar Container**
+    - The <div id="calendar"></div> acts as the placeholder where the FullCalendar library renders the calendar UI.
+    - This is where all menstrual cycle events will be dynamically displayed.
+  
+2. **FullCalendar Integration**
+    - The page imports FullCalendar via CDN:
+        - CSS for styling
+        - JavaScript for functionality
+    - The calendar is initialized when the page finishes loading using DOMContentLoaded
+
+### landing.blade.php
+<img width="719" hei ght="517" alt="Screenshot 2026-06-08 062505" src="https://github.com/user-attachments/assets/2af798a3-69d2-4b82-8c13-48ee34686b11" />
+<img width="700" height="944" alt="Screenshot 2026-06-08 062455" src="https://github.com/user-attachments/assets/26bb01d6-f42f-4bbe-83e1-977346f1ae8a" />
+
+landing.blade.php is the first page user sees before the login or register page. It feature showcase sections highlight 4 main system features:
+
+- Menstrual Tracking: Records and monitors cycle history
+- Prayer Monitoring: Tracks prayer obligations based on cycle status
+- Qada’ Management: Manages missed and completed prayers
+- Smart Reminders- Future feature for notifications and alerts
+
+### login.blade.php
+<img width="1369" height="271" alt="Screenshot 2026-06-08 061035" src="https://github.com/user-attachments/assets/b5b654e7-4370-47a7-8aa7-8587b2932cef" />
+<img width="1534" height="891" alt="Screenshot 2026-06-08 061009" src="https://github.com/user-attachments/assets/f6345478-fc45-4970-b1fc-2a111c7c9edf" />
+<img width="1439" height="897" alt="Screenshot 2026-06-08 060924" src="https://github.com/user-attachments/assets/8e6764dc-f27c-4069-b9a8-661803df0b68" />
+<img width="1141" height="910" alt="Screenshot 2026-06-08 060907" src="https://github.com/user-attachments/assets/5dbb8235-f99a-49b7-9c93-e86627c15424" />
+
+The login.blade.php file serves as the authentication interface of SuciTrack. It enables registered users to securely log in using their email and password, access their menstrual cycle and prayer tracking data, recover forgotten passwords, and navigate to the registration page if they need to create a new account.
+
+### register.blade.php
+<img width="864" height="927" alt="image" src="https://github.com/user-attachments/assets/e7779270-0d42-43d0-b87a-decc8262de98" />
+
+register.blade.php is the Laravel Blade view that displays the user registration page for SuciTrack. It provides a form where new users can create an account by entering their personal information.
+- **Tailwind CSS**
+- Used to style the page with gradients, spacing, colors, and responsive layouts.
+
+### create.blade.php
+<img width="972" height="932" alt="image" src="https://github.com/user-attachments/assets/3d23da2a-9e89-4629-9747-e5b3597480ad" />
+
+The create.blade.php file is responsible for displaying the New Menstrual Cycle Record form in the SuciTrack system. It allows users to record the start date and time of a new menstrual cycle.
+
+### edit.blade.php
+<img width="778" height="933" alt="image" src="https://github.com/user-attachments/assets/9d714748-49bb-4dfe-8513-90cde6121908" />
+
+The edit.blade.php page serves as the cycle completion interface of SuciTrack. It allows users to record the end date and time of a menstrual cycle, enabling the system to calculate cycle duration, maintain menstrual history records, and support prayer tracking features that depend on menstrual status.
+
+### index.blade.php
+<img width="753" height="441" alt="Screenshot 2026-06-08 062005" src="https://github.com/user-attachments/assets/fbe55f36-5635-44e7-bc44-e0d390e4bb58" />
+<img width="748" height="867" alt="Screenshot 2026-06-08 061955" src="https://github.com/user-attachments/assets/9570e1fe-0b78-403a-9f23-ca71af06d65d" />
+<img width="713" height="971" alt="Screenshot 2026-06-08 061907" src="https://github.com/user-attachments/assets/fa0bee27-c399-4719-99a3-81f136ebaae6" />
+
+The index.blade.php file is the main dashboard page for menstrual cycle records in the SuciTrack system.It allows users to:
+
+- Start a new cycle
+- End an ongoing cycle
+- View full history of cycles
+- Edit or delete records
+- Understand current cycle status
+
+### dashboard.blade.php
+<img width="628" height="943" alt="Screenshot 2026-06-08 062225" src="https://github.com/user-attachments/assets/49b718a1-2c52-4ed5-9739-a3d4e7fb7839" />
+<img width="647" height="650" alt="Screenshot 2026-06-08 062235" src="https://github.com/user-attachments/assets/a5cd3be8-aaa3-4b69-bea8-2abd438190e1" />
+
+The dashboard.blade.php file is the main user dashboard page in the SuciTrack system. It gives users an overview of their menstrual cycle status, purity days, Qada’ prayers, and daily prayer times in one centralized interface.
+
+### indexqada.blade.php
+<img width="467" height="905" alt="Screenshot 2026-06-08 062442" src="https://github.com/user-attachments/assets/22de85bc-1ad3-4f42-ad11-20214e598704" />
+
+This Blade file is the Qada’ (missed prayers) tracking page in the SuciTrack system. It allows users to view, monitor, and manage their missed prayers in a structured dashboard.
+
+### navigation-menu.blade.php
+<img width="802" height="943" alt="Screenshot 2026-06-08 062519" src="https://github.com/user-attachments/assets/76648d01-f5c1-47b5-86e2-906749a9fb32" />
+
+navigation-menu.blade.php page is the main navigation bar component in the SuciTrack system. It is included in authenticated pages and provides easy navigation between key sections of the application.
+
+This allows users to:
+- Move between Dashboard and Qada pages
+- View their logged-in identity
+- Log out securely
+
+## 9. Recommendation for Future Improvement
+
+Based on the current implementation of the SuciTrack system, several improvements are proposed to enhance its functionality, usability, and scalability. These recommendations focus on improving user experience, accessibility and the overall effectiveness of the platform as both a menstrual health tracker and Islamic lifestyle support system.
+
+**9.1 Advance Menstrual Tracking Features**
+It is recommended that the system includes a more detailed menstrual health tracking module to improve the accuracy of cycle monitoring and provide deeper health insights. This feature should allow users to record daily observations related to menstrual blood characteristics.
+
+The proposed inputs include:
+- Blood colour (e.g., bright red, dark red, brown, blackish)
+- Odour condition (strong and light smell)
+- Flow intensity (light spotting, medium flow, heavy flow)
+
+This enhancement will enable users to better understand their menstrual patterns over time. More importantly, it can assist in distinguishing between haid (menstruation) and istihadhah (irregular bleeding) based on consistent tracking data. Additionally, it may help users identify abnormal patterns that could indicate potential health concerns.
+
+**9.2 Global Prayer Time Integration**
+Currently, the system is assumed to rely on a single regional prayer time reference, which limits its usability for users in different geographical locations. Therefore, it is recommended to implement a global prayer time system.
+
+This improvement may include:
+- User-selectable location or city settings
+- Integration with global prayer time APIs (e.g., Muslim World League, ISNA, or local Islamic authorities)
+- Automatic location detection using GPS for mobile or web applications
+- Support for multiple time zones
+
+**9.3 Multi-Language Support**
+The implementation of multi-language support aim to improve accessibility and inclusivity for users from different linguistic backgrounds to use the system comfortably. The proposed implementation is to include the language selection option during registration or in settings. This enhancement ensures that the system is more inclusive and user-friendly, especially for international users and Muslim communities from different regions. It also improves usability by reducing language barriers
+
+### 10. Conclusion
+
+In conclusion, the SuciTrack system successfully demonstrates the development of a comprehensive, web-based menstrual and Qada’ prayer tracking application tailored specifically for Muslim women. Integrating menstrual cycle management with Islamic jurisprudential requirements helps the system to address a gap that is not usually covered by conventional health tracking applications.
+
+Through the use of Laravel’s MVC architecture, the system provides a structured and scalable backend that supports secure authentication, full CRUD operations for menstrual records and Qada’ prayer tracking logic. The integration of external APIs such as JAKIM and Aladhan enhances the accuracy of prayer time calculations, while the dashboard consolidates essential information such as cycle status, purity days and pending Qada’ prayers into a single, user-friendly interface.
+
+Other than that, the application not only simplifies manual religious calculations but also reduces the risk of errors in determining menstrual status and missed prayers. This improves both usability and reliability for users managing religious obligations alongside personal health tracking.
+
+In a nutshell, SuciTrack achieves its main objective of providing an automated, organized and accessible platform for menstrual and prayer tracking. With the proposed future enhancements such as advanced health tracking, global prayer time integration and multi-language support, the system has strong potential to evolve into a more inclusive and widely applicable digital solution.
