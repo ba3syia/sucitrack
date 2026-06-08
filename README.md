@@ -120,11 +120,11 @@ SuciTrack allows users to manage menstrual cycle records through a complete Crea
 - Track purity periods (Tuhr)
 
 ### 4.3 Prayer Time Integration
-The system integrates with JAKIM Prayer Time API to retrieve accurate prayer schedules based on selected zones. This ensures that prayer-related calculations are aligned with official Malaysian prayer times.
+The system integrates with the Aladhan API, a global Islamic API to retrieve accurate prayer schedules based on selected zones. This ensures that prayer-related calculations are aligned with official prayer times of the user's current location. This function is used in **PrayerController** and **MenstrualController**.
 
 **Functions:**
 
-- Retrieve prayer times from JAKIM API
+- Retrieve global prayer times from Aladhan API
 - Display daily prayer schedule
 - Support prayer zone selection
 - Update prayer information dynamically
@@ -202,7 +202,7 @@ The sequence diagram illustrates the interaction between the user, SuciTrack sys
 
 ## 8. Implementation Details
 ### routes.web.php
-<img width="1004" height="909" alt="image" src="https://github.com/user-attachments/assets/481eace6-a77d-485b-812f-29e0c1dd4733" />
+<img width="688" height="781" alt="Screenshot 2026-06-08 075019" src="https://github.com/user-attachments/assets/82e0427b-556b-4a63-9605-ab25da4e2d5d" />
 
 ### Routes Configuration Explanation
 The 'web.php' file in Laravel defines the web routes of the application. Routes determine how incoming HTTP requests are handled and which controller methods or views are returned. In this project, the routes are organized into two main categories: **public routes** and **authenticated routes**.
@@ -214,7 +214,10 @@ The 'web.php' file in Laravel defines the web routes of the application. Routes 
 2. **Authenticated Routes**  
    - These routes are grouped under middleware 'auth' and 'verified', ensuring only logged in and email-verified users can access them.  
    - Key routes include:
-     - **Dashboard**: '/dashboard' calls 'DashboardController@index' and displays the main user dashboard.  
+     - **Dashboard**: '/dashboard' calls 'DashboardController@index' and displays the main user dashboard.
+     - **Calendar**:
+    - '/calendar' calls CalendarController@index to display the calendar interface showing menstrual cycle records in a monthly visual format.
+    - '/calendar/events' calls CalendarController@events to retrieve menstrual cycle data and return it as events (usually in JSON format) for dynamic calendar rendering.
      - **Menstrual Records**:  
        - '/menstrual_records/end' calls 'MenstrualController@endCycle' to mark the end of a cycle.  
        - 'Route::resource('menstrual_records', MenstrualController::class)' automatically generates full CRUD operations (create, read, update, delete) for menstrual records.  
@@ -225,6 +228,21 @@ The 'web.php' file in Laravel defines the web routes of the application. Routes 
    - The file also includes 'auth.php', which contains all authentication-related routes such as login, registration, and password reset.
 
 ### Controller
+
+### CalendarController
+<img width="573" height="491" alt="image" src="https://github.com/user-attachments/assets/42250ba5-878b-454d-bc21-368086caf713" />
+
+### CalendarController Explanation
+1. **Index**
+    - Returns the calendar.index view.
+    - This view displays the calendar interface where menstrual cycle events are shown in a visual monthly layout.
+    - It acts as the main entry point for the calendar feature in the system.
+      
+2. **Events**
+    - Retrieves all menstrual records belonging to the authenticated user using the menstrualRecords() relationship.
+    - Loops through each record and converts it into a calendar event format.
+    - Returns the data as a JSON response so it can be dynamically loaded into a calendar library
+
 ### MenstrualController
 
 <img width="874" height="895" alt="Screenshot 2026-06-08 015746" src="https://github.com/user-attachments/assets/183483ee-f154-48f6-ba4c-dab69987a094" />
@@ -266,14 +284,10 @@ The MenstrualController manages all menstrual cycle records and integrates them 
    - If no active cycle exists, it shows an error message.
   
 ### DashboardController
-<img width="802" height="919" alt="Screenshot 2026-06-08 020825" src="https://github.com/user-attachments/assets/2e5986a4-acda-42e6-9792-2d745d39410a" />
-<img width="801" height="897" alt="Screenshot 2026-06-08 020815" src="https://github.com/user-attachments/assets/a06d11f9-9995-4404-b697-99883c7d1c2d" />
-<img width="874" height="913" alt="Screenshot 2026-06-08 020802" src="https://github.com/user-attachments/assets/0c67ed83-292b-4ceb-8aee-a447741b5bf8" />
-<img width="906" height="912" alt="Screenshot 2026-06-08 020753" src="https://github.com/user-attachments/assets/ab8bc85b-02a0-4d67-8f87-cefb6e3900ce" />
-<img width="814" height="917" alt="Screenshot 2026-06-08 020736" src="https://github.com/user-attachments/assets/4626da62-ae05-43b1-a551-ce07cf98da77" />
-<img width="913" height="918" alt="Screenshot 2026-06-08 020726" src="https://github.com/user-attachments/assets/461b5b1e-0cb7-4a6f-a3de-8afa32dd2619" />
-<img width="804" height="907" alt="Screenshot 2026-06-08 020714" src="https://github.com/user-attachments/assets/f38ddaa0-01b1-4ac7-8f89-e33530306a33" />
-<img width="713" height="473" alt="Screenshot 2026-06-08 020835" src="https://github.com/user-attachments/assets/4f4f5f23-2959-4c8d-8a43-24aad9cb4889" />
+<img width="847" height="878" alt="Screenshot 2026-06-08 075847" src="https://github.com/user-attachments/assets/31b63974-562c-43f0-8145-44a626877f2f" />
+<img width="838" height="843" alt="Screenshot 2026-06-08 075834" src="https://github.com/user-attachments/assets/7d73defe-daef-4837-9118-909f7362c0ee" />
+<img width="790" height="817" alt="Screenshot 2026-06-08 075816" src="https://github.com/user-attachments/assets/84493fb7-b14f-4620-a39b-ee7896c3ae9b" />
+<img width="622" height="909" alt="Screenshot 2026-06-08 075746" src="https://github.com/user-attachments/assets/9c87ac9e-10d5-48bd-ac18-995a97b9f725" />
 
 ### DashboardController Explanation
 
@@ -298,33 +312,35 @@ The 'DashboardController' is responsible for displaying the main dashboard, summ
    - Returns `null` if the API fails or data is missing.
 
 ### QadaController
-<img width="748" height="920" alt="Screenshot 2026-06-08 021840" src="https://github.com/user-attachments/assets/95f93ef8-f4c3-438c-9ca0-51155467c52c" />
-<img width="726" height="910" alt="Screenshot 2026-06-08 021830" src="https://github.com/user-attachments/assets/b415d916-05ae-4ab0-9392-621bd8ffb36b" />
-<img width="1024" height="890" alt="Screenshot 2026-06-08 021755" src="https://github.com/user-attachments/assets/89990221-e45a-4c18-97a1-fe53365bb72f" />
+### QadaController
+<img width="623" height="872" alt="Screenshot 2026-06-08 080334" src="https://github.com/user-attachments/assets/dbae1ae0-e7b7-49b1-8f02-8aac1ce70b97" />
+
 
 ### QadaController Explanation
 
-1. **Index**  
-   - Retrieves all Qada logs for the authenticated user, ordered by date.  
-   - Calculates the number of pending (`is_completed = false`) and completed (`is_completed = true`) Qada prayers.  
-   - Passes this data to the `indexqada` view for display.
-
-2. **Create & Store**  
-   - `create()` shows a form to add a new Qada log.  
-   - `store()` validates input (`prayer_type`, `qada_date`), then creates a new log with default `is_completed = false`.  
-   - Redirects to the index with a success message.
-
-3. **Show**  
-   - Displays details of a specific Qada log in the `showqada` view.
-
-4. **Edit & Update**  
-   - `edit()` loads a Qada log for editing.  
-   - `update()` modifies the log’s attributes (`prayer_type`, `qada_date`, `is_completed`, `notes`).  
-   - Redirects back with a success message.
-
-5. **Destroy**  
-   - Deletes a specific Qada log.  
-   - Redirects to the index with confirmation.
+1. **Index**
+- Retrieves all Qada logs belonging to the authenticated user.
+- Counts the number of Qada prayers based on their status (pending, completed) and also calculates the total number of records.
+- Passes the Qada data and statistics (qadas, pendingQadaCount, completedQadaCount, totalQadaCount) to the index qada view for display.
+  
+2. **Store**
+- Creates a new Qada log using firstOrCreate() to avoid duplicate entries.
+- Stores the following data:
+    - user_id (current authenticated user)
+    - qada_date (date of missed prayer)
+    - prayer_type (type of prayer missed)
+    - If the record does not exist, it is created with default values:
+        - status = pending
+        - notes = prayer name
+- Redirects the user back to the Qada index page after saving.
+- 
+3. **Toggle**
+- Finds a specific Qada log by id that belongs to the authenticated user.
+- Ensures users can only modify their own records using Auth::id() filtering.
+- Toggles the status field:
+- If current status is completed, it changes to pending
+- If current status is pending, it changes to completed
+- Saves the updated status and redirects back to the previous page.
   
 ### PrayerController 
 <img width="1057" height="913" alt="Screenshot 2026-06-08 022338" src="https://github.com/user-attachments/assets/b7c65820-c6e9-405a-94e6-dcbea0d6c6fd" />
@@ -532,7 +548,7 @@ The implementation of multi-language support aim to improve accessibility and in
 
 In conclusion, the SuciTrack system successfully demonstrates the development of a comprehensive, web-based menstrual and Qada’ prayer tracking application tailored specifically for Muslim women. Integrating menstrual cycle management with Islamic jurisprudential requirements helps the system to address a gap that is not usually covered by conventional health tracking applications.
 
-Through the use of Laravel’s MVC architecture, the system provides a structured and scalable backend that supports secure authentication, full CRUD operations for menstrual records and Qada’ prayer tracking logic. The integration of external APIs such as JAKIM and Aladhan enhances the accuracy of prayer time calculations, while the dashboard consolidates essential information such as cycle status, purity days and pending Qada’ prayers into a single, user-friendly interface.
+Through the use of Laravel’s MVC architecture, the system provides a structured and scalable backend that supports secure authentication, full CRUD operations for menstrual records and Qada’ prayer tracking logic. The integration of external APIs such as Aladhan API enhances the accuracy of prayer time calculations, while the dashboard consolidates essential information such as cycle status, purity days and pending Qada’ prayers into a single, user-friendly interface.
 
 Other than that, the application not only simplifies manual religious calculations but also reduces the risk of errors in determining menstrual status and missed prayers. This improves both usability and reliability for users managing religious obligations alongside personal health tracking.
 
