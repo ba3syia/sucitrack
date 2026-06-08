@@ -184,7 +184,7 @@ A one-to-many relationship exists between the tables, where one user can create 
     <b>Figure 2: Sequence Diagram of SuciTrack</b>
 </p>
 
-The sequence diagram illustrates the interaction between the user, SuciTrack system, database, and JAKIM API. The process begins when a user registers an account and logs into the system. The application then verifies the user's credentials through the database before granting access to the dashboard. When a menstrual record is created, the system stores the record in the database and retrieves prayer time information from the JAKIM API based on the selected zone. The processed data is then displayed on the dashboard, allowing users to monitor their menstrual cycle information and prayer-related records through a centralized interface.
+The sequence diagram illustrates the interaction between the user, SuciTrack system, database and al-adhan API. The process begins when a user registers an account and logs into the system. The application then verifies the user's credentials through the database before granting access to the dashboard. When a menstrual record is created, the system stores the record in the database and retrieves prayer time information from the al-adhan API based on the selected zone. The processed data is then displayed on the dashboard, allowing users to monitor their menstrual cycle information and prayer-related records through a centralized interface.
 
 ## 7. User Interface (Completed System)
 <img width="1837" height="893" alt="image" src="https://github.com/user-attachments/assets/249a5d1d-3d5c-42f4-8137-b145410762e3" />
@@ -259,7 +259,7 @@ The MenstrualController manages all menstrual cycle records and integrates them 
 
 6. **Qada Engine**  
    - 'generateQada()' calculates missed prayers during the menstrual period.  
-   - It fetches prayer times via the **Aladhan API**, checks which prayers fall within the cycle, and auto-generates Qada logs for them.
+   - It fetches prayer times via the **al-adhan API**, checks which prayers fall within the cycle, and auto-generates Qada logs for them.
 
 7. **End Cycle**  
    - Redirects the user to edit the latest active cycle.  
@@ -335,7 +335,7 @@ The 'DashboardController' is responsible for displaying the main dashboard, summ
 The `PrayerController` handles the retrieval and display of daily prayer times, as well as determining the next upcoming prayer for the user. It integrates with an external API to ensure accurate timings.
 
 1. **Index Method**  
-   - Calls the **Aladhan API** (`https://api.aladhan.com/v1/timingsByCity`) to fetch prayer times for Rawang, Malaysia.  
+   - Calls the **al-adhan API** (`https://api.aladhan.com/v1/timingsByCity`) to fetch prayer times for Rawang, Malaysia.  
    - Extracts the five obligatory prayers: Fajr, Dhuhr, Asr, Maghrib, and Isha.  
    - Converts these times into **Carbon objects** bound to the Malaysia timezone (`Asia/Kuala_Lumpur`) for real-time comparison.  
    - Determines the **next prayer** by checking which prayer time is still upcoming compared to the current time. Defaults to Fajr if all prayers for the day have passed.  
@@ -528,7 +528,7 @@ This improvement may include:
 **9.3 Multi-Language Support**
 The implementation of multi-language support aim to improve accessibility and inclusivity for users from different linguistic backgrounds to use the system comfortably. The proposed implementation is to include the language selection option during registration or in settings. This enhancement ensures that the system is more inclusive and user-friendly, especially for international users and Muslim communities from different regions. It also improves usability by reducing language barriers
 
-### 10. Conclusion
+## 10. Conclusion
 
 In conclusion, the SuciTrack system successfully demonstrates the development of a comprehensive, web-based menstrual and Qada’ prayer tracking application tailored specifically for Muslim women. Integrating menstrual cycle management with Islamic jurisprudential requirements helps the system to address a gap that is not usually covered by conventional health tracking applications.
 
