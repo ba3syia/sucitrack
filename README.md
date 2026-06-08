@@ -122,11 +122,11 @@ SuciTrack allows users to manage menstrual cycle records through a complete Crea
 - Track purity periods (Tuhr)
 
 ### 4.3 Prayer Time Integration
-The system integrates with the Aladhan API, a global Islamic API to retrieve accurate prayer schedules based on selected zones. This ensures that prayer-related calculations are aligned with official prayer times of the user's current location. This function is used in **PrayerController** and **MenstrualController**.
+The system integrates with the Aladhan API and WaktuSolat API to retrieve accurate prayer schedules based on selected zones. This ensures that prayer-related calculations are aligned with official prayer times of the user's current location. The Aladhan API function is used in **PrayerController** and **MenstrualController** while WaktuSolatAPI is used in **DashboardController**.
 
 **Functions:**
 
-- Retrieve global prayer times from Aladhan API
+- Retrieve prayer times from Aladhan API and WaktuSolat API
 - Display daily prayer schedule
 - Support prayer zone selection
 - Update prayer information dynamically
