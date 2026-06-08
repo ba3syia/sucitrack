@@ -60,9 +60,11 @@
 
 ## 1. Introduction
 
-SuciTrack is a specialized, Laravel-based web application cater assist Muslim women in tracking their menstrual cycles (Hayd) and periods of purity (Tuhr) in strict accordance with Shariah (Islamic jurisprudence) guidelines.
+SuciTrack is a Laravel-based web application developed to help Muslim women track their menstrual cycles (Hayd) and periods of purity (Tuhr) according to Shariah guidelines.
 
-Navigating the complexities of Islamic rulings regarding prayer (Salah) during and after menstruation can be challenging. SuciTrack addresses this by replacing manual calculations with an automated, reliable digital solution. By combining the robust Model-View-Controller (MVC) architecture of Laravel with precise jurisprudential logic, the platform empowers users to maintain the five daily prayers and accurately manage their religious obligations.
+Many existing period tracking applications focus mainly on health and lifestyle purposes. However, they do not provide features that help users determine religious obligations related to menstruation, such as identifying periods of purity, monitoring prayer eligibility and calculating missed prayers that may require replacement (Qada'). As a result, users often need to perform these calculations manually, which can be confusing and time-consuming.
+
+To address this issue, SuciTrack combines menstrual cycle tracking with prayer time information and Islamic rule-based calculations in a single platform. The system allows users to record their menstrual history, view prayer schedules and monitor information related to their worship obligations through a centralized dashboard. By automating these processes, SuciTrack aims to improve accuracy, convenience and accessibility for its users.
 
 ## 2. Problem Statement & Objectives
 
